@@ -20,12 +20,14 @@ export default new Vuex.Store({
         },
         EDIT_TODO(state, todo){
             var todos = state.todos
-            todos.slice(todos.indexOf(todo), 1)
-            state.newTodo = todo
+            todos.splice(todos.indexOf(todo), 1)
+            state.todos = todos
+            state.newTodo = todo.body
         },
         REMOVE_TODO(state, todo){
             var todos = state.todos
-            todos.slice(todos.indexOf(todo), 1)
+            todos.splice(todos.indexOf(todo), 1)
+            
         },
         COMPLETE_TODO(state, todo){
             todo.completed = !todo.completed
@@ -57,7 +59,8 @@ export default new Vuex.Store({
     },
     getters: {
         newTodo: state => state.newTodo,
-        todos: state => state.todos.filter((todo)=>{return !todo.completed})
+        todos: state => state.todos.filter((todo) => {return !todo.completed}),
+        completedTodos: state => state.todos.filter((todo) => {return todo.completed})
     }
 
 })
