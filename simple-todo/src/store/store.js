@@ -57,7 +57,7 @@ export default new Vuex.Store({
     },
     getters: {
         newTodo: state => state.newTodo,
-        todos: state => state.todos
+        todos: state => state.todos.filter((todo)=>{return !todo.completed})
     }
 
 })
