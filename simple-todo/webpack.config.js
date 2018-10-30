@@ -1,5 +1,11 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path')
+const webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+const env = process.env.NODE_ENV
+const config = {
+   mode: env || 'development'
+}
 
 module.exports = {
   entry: './src/main.js',
@@ -9,25 +15,21 @@ module.exports = {
     filename: 'build.js'
   },
   module: {
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      },
+    rules: [
+      { test: /\.vue$/, loader: 'vue-loader' },
+      { test: /\.css$/, loader: 'css-loader' },
+      { test: /\.scss$/, loader: 'css-loader' },
+      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file',
-        query: {
-          name: '[name].[ext]?[hash]'
-        }
+        query: { name: '[name].[ext]?[hash]' }
       }
     ]
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   devServer: {
     historyApiFallback: true,
     noInfo: true
@@ -35,7 +37,7 @@ module.exports = {
   devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (env === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
